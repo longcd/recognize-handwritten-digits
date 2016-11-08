@@ -55,5 +55,11 @@ MNIST数据集是一个手写数字的数据集。训练集包含了60,000个样
 
 # 6. 结果演示
 
-输入`python server.py`打开服务器。在页面上写一个数字预测看看：
+输入`python server.py`打开服务器。
+
+在页面上写一个数字预测看看：
+
+![image](https://github.com/longcd/recognize-handwritten-digits/raw/master/2.png)
+
+![image](https://github.com/longcd/recognize-handwritten-digits/raw/master/pred2.png)
 
