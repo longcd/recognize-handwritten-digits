@@ -1,71 +1,59 @@
-#　使用神经网络识别手写数字
+# 项目介绍
 
-本项目我们将实现一个可以识别手写数字的神经网络。这个程序仅仅100多行，不使用特别的神经网络库。然而，这个短小的网络不需要人类帮助便可以超过 96% 的准确率识别数字。
+## 1. 内容简介
 
-# 数据集
+本项目最终将基于Python实现的前馈神经网络实现一个手写数字识别系统，系统会在服务器启动时自动读入训练好的神经网络文件，用户可以通过在html页面上手写数字发送给服务器来得到识别结果。
 
-本项目使用著名的[MNIST](http://yann.lecun.com/exdb/mnist/)数据集，进行训练、验证和测试。该数据集包含 60,000 个训练样本，和 10,000 个测试样本。每个样本都是 28*28 像素的灰度值图像。关于该数据集更多信息前到[这里](http://yann.lecun.com/exdb/mnist/)来查看。
+## 2. 知识点
 
-# 知识点
+本项目完成过程中，我们将学习：
 
-本项目运用了以下知识点：
+1. 什么是神经网络
+2. 在浏览器完成手写数据的输入与请求的发送
+3. 在服务器端根据请求调用神经网络模块并给出响应
+4. 实现BP神经网络
+5. 多分类Logistic regression
+6. sklearn库中SVM的使用
 
-- S型神经元
-- 前馈神经网络
-- 梯度下降算法
-- 二次代价函数、交叉熵代价函数
-- 反向传播算法
-- 过拟合、规范化
+## 3. 系统构成
 
-本项目使用 `jupyter notebook (ipython notebook)` 进行展示。
+我们的手写数字识别系统分为5部分，分别写在4个文件中：
 
-`Github` 加载 `.ipynb` 的速度较慢，建议在 [network](http://nbviewer.jupyter.org/github/longcd/recognize-handwritten-digits/blob/master/mnist_network.ipynb) 
+- 客户端（`digit_recognizer.js`）
+- 服务器（`server.py`）
+- 用户接口（`index.html`）
+- 神经网络(`network2.py`)
 
-[network2](http://nbviewer.jupyter.org/github/longcd/recognize-handwritten-digits/blob/master/mnist_network2.ipynb)中查看该项目。
+客户端(`index.html`)是一个html页面，用户在canvans上写数字，之后点击选择预测。客户端(`digit_recognizer.js`)将收集到的手写数字组合成一个数组发送给服务器端(`server.py`)处理，服务器加载训练完成后的模型(`network2.json`)并进行预测，然后将结果返回给客户端。
 
-----
+## 4. 数据集来源
 
-## 1.一个简单的分类手写数字的网络
+> 官网：http://yann.lecun.com/exdb/mnist/
 
-我们将使用一个三层神经网络来识别单个数字：
+MNIST数据集是一个手写数字的数据集。训练集包含了60,000个样本，测试集包含了10,000个样本。它的每个样本都被规范处理为一张28px*28px的灰度图。
 
-1. 网络的输入层包含给输入像素的值进行编码的神经元。我们给网络的训练数据会有很多扫描得到的 28×28 的手写数字的图像组成,所有输入层包含有 784=28×28 个神经元。
-2. 网络的第二层是一个隐藏层。我们用 n 来表示神经元的数量,我们将给 n 实验不同的数值。
-3. 网络的输出层包含有 10 个神经元。我们把输出神经元的输出赋予编号 0 到 9,并计算出那个神经元有最高的激活值。比如,如果编
-号为 6 的神经元激活,那么我们的网络会猜到输入的数字是 6。其它神经元相同。
+该数据集包含4个文件：
 
-## 2.使用梯度下降算法进行学习
+- train-images-idx3-ubyte.gz:  training set images (9912422 bytes)
+- train-labels-idx1-ubyte.gz:  training set labels (28881 bytes)
+- t10k-images-idx3-ubyte.gz:   test set images (1648877 bytes)
+- t10k-labels-idx1-ubyte.gz:   test set labels (4542 bytes) 
 
-MNIST 数据分为两个部分。第一部分包含 60,000 幅用于训练数据的图像。这些图像是 28×28 大小的灰度图像。第二部分是 10,000 幅用于测试数据的图像,同样是 28 × 28 的灰度图像。我们将用这些测试数据来评估我们的神经网络学会识别数字有多好。
+使用 `./data/code/run.sh` 下载上述4个文件并解压。
 
-- 为了方便,把每个训练输入 x 看作一个 28×28=784 维的向量。
-- 我们用 y = y(x) 表示对应的期望输出,这里 y 是一个 10 维的向量。
+使用 `./data/code/transform.c` 将数据集转换为 csv 格式，并将训练集拆分成：50,000 个样本作为训练集和 10,000 个样本作为验证集。
 
-我们希望有一个算法,能让我们找到权重和偏置,以至于网络的输出 y(x) 能够拟合所有的训练输入x。为了量化我们如何实现这个目标,我们定义一个代价函数:
-![image](https://github.com/longcd/recognize-handwritten-digits/raw/master/QuadraticCost.png)  
+# 5. 模型实现
 
-使用梯度下降算法解决代价函数的最小化问题：
+## 5.1 k最近邻算法(kNN)
 
-![image](https://github.com/longcd/recognize-handwritten-digits/raw/master/SGD.png)  
+## 5.2 Logistic regression
 
-## 3.实现我们的网络来分类数字
+## 5.3 SVM
 
-首先，我们将 60,000 个图像的 MNIST 训练集分成两个部分:一部分 50,000 个图像,我们将用来训练我们的神经网络,和一个单独的 10,000 个图像的验证集。
+## 5.4 前馈神经网络
 
-具体实现在 [network](http://nbviewer.jupyter.org/github/longcd/recognize-handwritten-digits/blob/master/mnist_network.ipynb)  中查看。
+# 6. 结果演示
 
-## 4.改进神经网络的学习方法
+输入`python server.py`打开服务器。在页面上写一个数字预测看看：
 
-引入交叉熵代价函数:
-
-![image](https://github.com/longcd/recognize-handwritten-digits/raw/master/CrossEntropyCost.png) 
-
-规范化：
-
-L2规范化：![image](https://github.com/longcd/recognize-handwritten-digits/raw/master/L2.png) 
-
-L1规范化：![image](https://github.com/longcd/recognize-handwritten-digits/raw/master/L1 .png) 
-
----
-
-[Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/index.html)

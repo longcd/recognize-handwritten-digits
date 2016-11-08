@@ -1,0 +1,19 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="digit_recognizer.js" charset="utf-8"></script>
+</head>
+<body onload="digitRecognizer.onLoadFunction()">
+    <div id="main-container" style="text-align: center;">
+        <h1>Digit Recognizer</h1>
+        <canvas id="canvas" width="280" height="280"></canvas>
+        <form name="input">
+            <!-- <p>Digit: <input id="digit" type="text"> </p>
+            <input type="button" value="Train" onclick="ocrDemo.train()"> -->
+            <input type="button" value="Test" onclick="digitRecognizer.test()">
+            <input type="button" value="Reset" onclick="digitRecognizer.resetCanvas();"/>
+        </form> 
+    </div>
+</body>
+</html>
